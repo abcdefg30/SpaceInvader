@@ -1,0 +1,67 @@
+#version 450 core
+
+in vec4 ivPosition;
+in vec4 ivColor;
+in vec2 ivTexCoord;
+
+uniform mat4 pr_Mat;
+uniform vec4 cameraVector;
+uniform vec4 uvTranslation;
+uniform vec2 uvScale;
+uniform float uvRotationX;
+uniform float uvRotationY;
+uniform float uvRotationZ;
+
+mat4 veiwMat = mat4(
+	1.0, 0.0, 0.0, 0.0,
+	0.0, 1.0, 0.0, 0.0,
+	0.0, 0.0, 1.0, 0.0,
+	cameraVector.x, cameraVector.y, cameraVector.z, 1.0
+); 
+
+mat4 transMat = mat4(
+	1.0, 0.0, 0.0, 0.0,
+	0.0, 1.0, 0.0, 0.0,
+	0.0, 0.0, 1.0, 0.0,
+	uvTranslation.x, uvTranslation.y, uvTranslation.z, 1.0
+); 
+
+mat4 scaleMat = mat4(
+	uvScale.x, 0.0, 0.0, 0.0,
+	0.0, uvScale.y, 0.0, 0.0,
+	0.0, 0.0, 1.0, 0.0,
+	0.0, 0.0, 0.0, 1.0
+); 
+
+mat4 rotMatX = mat4(
+	1.0, 0.0, 0.0, 0.0,
+	0.0, cos(uvRotationX), -sin(uvRotationX), 0.0,
+	0.0, sin(uvRotationX), 1.0, cos(uvRotationX),
+	0.0, 0.0, 0.0, 1.0
+); 
+
+mat4 rotMatY = mat4(
+	cos(uvRotationY), -sin(uvRotationY), 0.0, 0.0,
+	sin(uvRotationY), cos(uvRotationY), 0.0, 0.0,
+	0.0, 0.0, 1.0, 0.0,
+	0.0, 0.0, 0.0, 1.0
+); 
+
+mat4 rotMatZ = mat4(
+	cos(uvRotationZ), 0.0, sin(uvRotationZ), 0.0,
+	0.0, 1.0, 0.0, 0.0,
+	-sin(uvRotationZ), 0.0, cos(uvRotationZ), 0.0,
+	0.0, 0.0, 0.0, 1.0
+); 
+
+out vec4 vfColor;
+out vec2 vfTexCoord;
+
+void main(){
+	vfColor = ivColor;
+	vfTexCoord = ivTexCoord;
+	
+	mat4 modelMat =  transMat * scaleMat * rotMatX * rotMatY *  rotMatZ;
+	
+	gl_Position = veiwMat * pr_Mat * modelMat * ivPosition;
+}

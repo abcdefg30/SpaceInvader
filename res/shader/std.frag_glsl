@@ -1,0 +1,14 @@
+# version 450 core
+
+in vec4 vfColor;
+in vec2 vfTexCoord;
+
+uniform sampler2D uftex0;
+
+out vec4 oColor;
+
+void main(){
+		oColor = texture2D(uftex0, vfTexCoord) * vfColor; //texture2D(uftex0, vfTexCoord);// * vfColor;
+		if(oColor.w == 0)
+			discard;
+}
