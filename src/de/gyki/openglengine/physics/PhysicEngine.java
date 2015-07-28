@@ -178,13 +178,13 @@ public class PhysicEngine {
 			if (collisions[0][s][0] != 0) {
 				// if jumps are only possible on the ground, it checks if the
 				// player is on the ground to set the jumpBlock
-				if (jumpMode == false) {
+				if (jumpMode == false && gravity == true) {
 					if (collisions[0][s][1] == -Mesh.Y_DIR)
 						jumpBlock = false;
 				}
 
 				// if the player hits a obstacle from beneath the jump stops
-				if (jumpBlock == true) {
+				if (jumpBlock == true && gravity == true) {
 					if (collisions[0][s][1] == Mesh.Y_DIR)
 						playerMovement.set(Vector.Y_POS, gravitySpeed);
 				}
