@@ -55,8 +55,8 @@ public class Projekttage extends Game {
 
 	public boolean GameOver = false;
 	public boolean Shooting = false;
-	private Mesh[] shots = new Mesh[100];
-	private boolean[] shot = new boolean[100];
+	private Mesh[] shots = new Mesh[20];
+	private boolean[] shot = new boolean[20];
 	private int cooldown = 1;
 
 	private Player player;
@@ -65,6 +65,7 @@ public class Projekttage extends Game {
 	private Mesh[] meshes;
 
 	// x-Achse von -16 bis 16
+	// y-Achse von -9 bis 9
 	// z-Achse beliebig viele, aber nicht unter -9
 	@Override
 	public void init() {
@@ -182,7 +183,7 @@ public class Projekttage extends Game {
 			if (shot[i])
 				continue;
 
-			cooldown = 15;
+			cooldown = 20;
 			shot[i] = true;
 			shots[i].setPosition(new Vector3f(player.getPosition().get(Vector.X_POS),
 					player.getPosition().get(Vector.Y_POS), player.getPosition().get(Vector.Z_POS)));
