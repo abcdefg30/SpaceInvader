@@ -1,4 +1,4 @@
-# version 450 core
+# version 140 core
 
 in vec4 vfColor;
 in vec2 vfTexCoord;
