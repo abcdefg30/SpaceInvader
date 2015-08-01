@@ -45,8 +45,8 @@ public class TiledRec extends Mesh {
 
 		super.indices = new byte[] { 0, 1, 2, 0, 2, 3 };
 
-		super.width = 2.0f * scale.get(Vector.X_POS);
-		super.height = 2.0f * scale.get(Vector.Y_POS);
+		super.width = scale.get(Vector.X_POS);
+		super.height = scale.get(Vector.Y_POS);
 
 		super.vertexData = new VertexArray(this);
 

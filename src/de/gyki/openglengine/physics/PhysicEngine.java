@@ -16,21 +16,47 @@ public class PhysicEngine {
 	private float[][][] lastCollision;
 	private boolean gravity, jump, jumpBlock, jumpMode;
 	private boolean firstJump = true;
-	private float gravitySpeed = -0.2f;
+	private float gravitySpeed = 0.0f;
+	private float gravityAcceleration = 0.0f;
 	private float jumpHeight = 0.0f;
 
 	// the calculated movement
 	private Vector3f playerMovement;
 
+	/**
+	 * Initializes the objects but leafs them empty.
+	 */
 	public PhysicEngine() {
 		stackB = new BoundingBox[101];
 		countB = 0;
 		playerMovement = new Vector3f(0.0f, 0.0f, 0.0f);
 	}
 
-	public void init(Mesh[] obstacles, Player player, boolean gravity, float gravitySpeed, boolean jumpMode) {
+	/**
+	 * This method initializes everything the physikEngine needs.
+	 * 
+	 * @param obstacles
+	 *            {@code Mesh[]} The array of obstacles the game uses.
+	 * @param player
+	 *            {@code Player} The player the game uses.
+	 * @param gravity
+	 *            {@code boolean} If gravity is enabled, if it is not the next
+	 *            parameters can be ignored.
+	 * @param maxGravitySpeed
+	 *            {@code float} The maximum speed the player can have by falling
+	 *            down.
+	 * @param gravityExcaleration
+	 *            {@code float} The acceleration the player is pulled down with
+	 * @param jumpMode
+	 *            {@code boolean} Declares the jump mode. If it is true jumping
+	 *            is possible during falling. If it is false jumps are only
+	 *            possible if the player 'stands' on something
+	 */
+	public void init(Mesh[] obstacles, Player player, boolean gravity, float maxGravitySpeed, float gravityAcceleration,
+			boolean jumpMode) {
 		this.gravity = gravity;
-		this.gravitySpeed = gravitySpeed;
+		this.gravitySpeed = maxGravitySpeed;
+		this.gravityAcceleration = gravityAcceleration;
 		this.jumpMode = jumpMode;
 		if (gravity == true)
 			this.addPlayerMovement(new Vector2f(0.0f, gravitySpeed));
@@ -91,19 +117,38 @@ public class PhysicEngine {
 		return lastCollision;
 	}
 
+	/**
+	 * Adds a vector to the movement.
+	 * 
+	 * @param vec
+	 *            {@code Vector2f} The vector that should be added to the
+	 *            movement.
+	 */
 	public void addPlayerMovement(Vector2f vec) {
 		playerMovement = (Vector3f) playerMovement.sum(new Vector3f(vec, 0.0f));
 	}
 
+	/**
+	 * Removes a vector from the movement.
+	 * 
+	 * @param vec
+	 *            {@code Vector2f} The vector that should be removed from the
+	 *            movement.
+	 */
 	public void remPlayerMovement(Vector2f vec) {
 		playerMovement = (Vector3f) playerMovement.sub(vec);
 	}
 
+	/**
+	 * Enables the jump processed in the update method.
+	 * 
+	 * @param height
+	 *            {@code float}
+	 */
 	public void jump(float height) {
 		if (gravity == true && jumpBlock == false)
 			jump = true;
 		this.jumpHeight = height;
-		this.jumpMode = jumpMode;
 		this.firstJump = false;
 	}
 
@@ -139,7 +184,7 @@ public class PhysicEngine {
 	}
 
 	/**
-	 * Updates the collisions. And handles the jump.
+	 * Updates the collisions. And processes the jump.
 	 * 
 	 * @return The collision array
 	 */
@@ -158,12 +203,12 @@ public class PhysicEngine {
 
 		// if the player does not move down at gravitySpeed he is forced down
 		if (playerMovement.get(Vector.Y_POS) > gravitySpeed && gravity == true) {
-			playerMovement.set(Vector.Y_POS, playerMovement.get(Vector.Y_POS) - 0.05f);
+			playerMovement.set(Vector.Y_POS, playerMovement.get(Vector.Y_POS) + gravityAcceleration);
 		}
 
 		// if the jumps are possible during falling, it checks if the player is
 		// falling to set the jumpBlock
-		if (playerMovement.get(Vector.Y_POS) < (jumpHeight / 2) && jumpMode == true) {
+		if (playerMovement.get(Vector.Y_POS) < (jumpHeight / 2) && jumpMode == true && gravity == true) {
 			jumpBlock = false;
 		}
 

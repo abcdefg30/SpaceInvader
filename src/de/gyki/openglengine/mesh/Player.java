@@ -61,8 +61,8 @@ public class Player extends Mesh {
 
 		super.indices = new byte[] { 0, 1, 2, 0, 2, 3 };
 
-		super.width = 2.0f * scale.get(Vector.X_POS);
-		super.height = 2.0f * scale.get(Vector.Y_POS);
+		super.width = scale.get(Vector.X_POS);
+		super.height = scale.get(Vector.Y_POS);
 
 		super.vertexData = new VertexArray(this);
 
@@ -78,6 +78,17 @@ public class Player extends Mesh {
 
 		OpenGLErrorCatcher.check("Player creation '" + this.toString() + "'!!!");
 
+	}
+
+	/**
+	 * Replaces the texture.
+	 * 
+	 * @param newTex
+	 *            {@code Texture} The new Texture.
+	 */
+	public void changeTexture(Texture newTex) {
+		super.textures[0] = newTex;
+		super.shader.setUniform1i("uftex0", 0);
 	}
 
 	/**
