@@ -28,6 +28,24 @@ public class BoundingBox {
 		// rB.get(Vector.Y_POS) + ")");
 	}
 
+	public float[] MYintersection(BoundingBox bc) {
+		float[] ret = new float[1];
+		if (bc.getPosition().get(Vector.Z_POS) != position.get(Vector.Z_POS))
+			return ret;
+
+		float xDis = position.get(Vector.X_POS) - bc.position.get(Vector.X_POS);
+		float yDis = position.get(Vector.Y_POS) - bc.position.get(Vector.Y_POS);
+
+		float xDif = Math.abs(xDis) - (width + bc.width);
+		float yDif = Math.abs(yDis) - (height + bc.height);
+
+		if (xDif <= 0 && yDif <= 0) {
+			ret[0] = 1;
+		}
+
+		return ret;
+	}
+
 	public float[] intersection(BoundingBox bc, Vector2f playerDir) {
 		float[] ret = new float[3];
 		if (bc.getPosition().get(Vector.Z_POS) != position.get(Vector.Z_POS))

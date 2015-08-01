@@ -27,7 +27,7 @@ public class PhysicEngine {
 	 * Initializes the objects but leafs them empty.
 	 */
 	public PhysicEngine() {
-		stackB = new BoundingBox[101];
+		stackB = new BoundingBox[300];
 		countB = 0;
 		playerMovement = new Vector3f(0.0f, 0.0f, 0.0f);
 	}
@@ -78,8 +78,9 @@ public class PhysicEngine {
 	 *            {@code Vector4f} the position it should be moved to
 	 */
 	public void updatePositionB(int pos, Vector4f position) {
-		if (pos >= 101)
+		if (pos >= 300)
 			return;
+
 		stackB[pos].move(position);
 	}
 
@@ -94,7 +95,7 @@ public class PhysicEngine {
 	 *            {@code float} The height of the bounding box
 	 */
 	public void registerBox(Vector4f position, float width, float height) {
-		if (countB >= 101)
+		if (countB >= 300)
 			return;
 
 		stackB[countB] = new BoundingBox(position, width, height);
@@ -181,6 +182,30 @@ public class PhysicEngine {
 		}
 
 		return collision;
+	}
+
+	/**
+	 * Hacky own update method
+	 */
+	public float[][][] MYupdate() {
+
+		// Player movement
+		player.move(playerMovement);
+		updatePositionB(0, player.getPosition());
+
+		// Collisions
+		lastCollision = new float[countB][countB][3];
+
+		for (int d = 0; d < lastCollision.length; d++) {
+			for (int e = 1; e < lastCollision[d].length - 1; e++) {
+				if (d == e)
+					continue;
+
+				lastCollision[d][e] = stackB[d].MYintersection(stackB[e]);
+			}
+		}
+
+		return lastCollision;
 	}
 
 	/**

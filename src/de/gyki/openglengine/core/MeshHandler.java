@@ -41,7 +41,7 @@ public class MeshHandler extends GLFWKeyCallback {
 	 * Updates the game and the PhysicEngine and passes the results to the game.
 	 */
 	public void update() {
-		Engine_a2.CURRENTGAME.update(PhysicEngine.update());
+		Engine_a2.CURRENTGAME.update(PhysicEngine.MYupdate());
 
 	}
 
