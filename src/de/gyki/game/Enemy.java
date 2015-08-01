@@ -1,16 +1,10 @@
 package de.gyki.game;
 
-import de.gyki.openglengine.core.MeshHandler;
 import de.gyki.openglengine.graphics.Mesh;
-import de.gyki.openglengine.graphics.Shader;
-import de.gyki.openglengine.graphics.Texture;
-import de.gyki.openglengine.graphics.VertexArray;
 import de.gyki.openglengine.math.Vector;
 import de.gyki.openglengine.math.Vector2f;
 import de.gyki.openglengine.math.Vector3f;
-import de.gyki.openglengine.math.Vector4f;
 import de.gyki.openglengine.mesh.*;
-import de.gyki.openglengine.util.OpenGLErrorCatcher;
 
 public class Enemy {
 
